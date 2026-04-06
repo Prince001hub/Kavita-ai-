@@ -5,43 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>कविता AI - आपकी दोस्त</title>
     <style>
-        body { background-color: #121212; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 50px; transition: 0.5s; }
-        h1 { color: #00ffcc; font-size: 2.5rem; }
-        p { font-size: 1.2rem; color: #bbb; }
-        .chat-container { margin-top: 30px; display: none; }
-        input { padding: 10px; border-radius: 5px; border: none; width: 70%; max-width: 300px; }
-        button { padding: 10px 20px; border-radius: 5px; border: none; background-color: #00ffcc; color: black; font-weight: bold; cursor: pointer; }
+        body { background-color: #0b0e11; color: #00ffcc; font-family: sans-serif; text-align: center; padding: 50px; }
+        .box { border: 2px solid #00ffcc; padding: 20px; border-radius: 15px; background: #161b22; box-shadow: 0 0 15px #00ffcc; }
+        input { padding: 12px; width: 70%; border-radius: 8px; border: none; margin-top: 10px; }
+        button { padding: 12px 20px; background: #00ffcc; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
-
-    <div id="welcome-screen">
-        <h1 id="greeting">नमस्ते!</h1>
-        <p id="sub-text">लोड हो रहा है...</p>
-    </div>
-
-    <div class="chat-container" id="chat-box">
-        <input type="text" id="user-input" placeholder="कुछ लिखें...">
-        <button onclick="sendMessage()">भेजें</button>
+    <div class="box">
+        <h1 id="msg">नमस्ते प्रिंस भाई!</h1>
+        <p id="status">मैं आपकी कविता हूँ...</p>
+        <input type="text" id="userInput" placeholder="यहाँ कुछ लिखो...">
+        <br>
+        <button onclick="talk()">बात करें</button>
     </div>
 
     <script>
-        // जैसे ही पेज खुलेगा, नाम पूछेगा
-        window.onload = function() {
-            let userName = prompt("नमस्ते! आपका प्यारा नाम क्या है?");
-            
-            if (userName == null || userName == "") {
-                userName = "दोस्त";
+        let userName = localStorage.getItem("uName");
+
+        // अगर नाम नहीं पता तो पूछो
+        if (!userName) {
+            userName = prompt("नमस्ते! आपका नाम क्या है?");
+            if(userName) localStorage.setItem("uName", userName);
+        }
+
+        const msg = document.getElementById("msg");
+        msg.innerText = "नमस्ते " + (userName || "दोस्त") + " भाई!";
+
+        // बोलने वाला फंक्शन
+        function speak(text) {
+            let speech = new SpeechSynthesisUtterance();
+            speech.text = text;
+            speech.lang = "hi-IN"; // हिंदी आवाज़
+            speech.rate = 1;
+            window.speechSynthesis.speak(speech);
+        }
+
+        function talk() {
+            let input = document.getElementById("userInput").value.toLowerCase();
+            let reply = "";
+
+            if (input.includes("hello") || input.includes("नमस्ते")) {
+                reply = "नमस्ते " + userName + " भाई! कैसे हो आप?";
+            } else if (input.includes("कैसे हो")) {
+                reply = "मैं बहुत अच्छी हूँ, आप बताओ क्या चल रहा है?";
+            } else {
+                reply = "अभी मेरा दिमाग बन रहा है, पर आपकी बात सुनकर अच्छा लगा!";
             }
 
-            document.getElementById("greeting").innerHTML = "नमस्ते " + userName + " भाई!";
-            document.getElementById("sub-text").innerHTML = "मैं हूँ आपकी अपनी <b>कविता AI</b>। बताइए, आज आप कैसा महसूस कर रहे हैं?";
-            document.getElementById("chat-box").style.display = "block";
-        };
-
-        function sendMessage() {
-            alert("प्रिंस भाई अभी मेरा दिमाग अपडेट कर रहे हैं, जल्द ही मैं जवाब भी दूँगी!");
+            document.getElementById("status").innerText = reply;
+            speak(reply); // यहाँ कविता बोलेगी!
         }
     </script>
 </body>
 </html>
+ 
