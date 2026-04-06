@@ -5,15 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>कविता AI - आपकी दोस्त</title>
     <style>
-        body { background-color: #121212; color: white; font-family: sans-serif; text-align: center; padding: 50px; }
-        h1 { color: #00ffcc; }
-        .status { color: #888; font-style: italic; }
+        body { background-color: #121212; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 50px; transition: 0.5s; }
+        h1 { color: #00ffcc; font-size: 2.5rem; }
+        p { font-size: 1.2rem; color: #bbb; }
+        .chat-container { margin-top: 30px; display: none; }
+        input { padding: 10px; border-radius: 5px; border: none; width: 70%; max-width: 300px; }
+        button { padding: 10px 20px; border-radius: 5px; border: none; background-color: #00ffcc; color: black; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-    <h1>नमस्ते प्रिंस भाई!</h1>
-    <p>मैं हूँ आपकी अपनी <b>कविता AI</b>।</p>
-    <p class="status">अभी मेरा दिमाग बन रहा है... जल्द ही हम बातें करेंगे।</p>
+
+    <div id="welcome-screen">
+        <h1 id="greeting">नमस्ते!</h1>
+        <p id="sub-text">लोड हो रहा है...</p>
+    </div>
+
+    <div class="chat-container" id="chat-box">
+        <input type="text" id="user-input" placeholder="कुछ लिखें...">
+        <button onclick="sendMessage()">भेजें</button>
+    </div>
+
+    <script>
+        // जैसे ही पेज खुलेगा, नाम पूछेगा
+        window.onload = function() {
+            let userName = prompt("नमस्ते! आपका प्यारा नाम क्या है?");
+            
+            if (userName == null || userName == "") {
+                userName = "दोस्त";
+            }
+
+            document.getElementById("greeting").innerHTML = "नमस्ते " + userName + " भाई!";
+            document.getElementById("sub-text").innerHTML = "मैं हूँ आपकी अपनी <b>कविता AI</b>। बताइए, आज आप कैसा महसूस कर रहे हैं?";
+            document.getElementById("chat-box").style.display = "block";
+        };
+
+        function sendMessage() {
+            alert("प्रिंस भाई अभी मेरा दिमाग अपडेट कर रहे हैं, जल्द ही मैं जवाब भी दूँगी!");
+        }
+    </script>
 </body>
 </html>
-
