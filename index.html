@@ -3,60 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>कविता AI - आपकी दोस्त</title>
+    <title>Kavita AI</title>
     <style>
         body { background-color: #0b0e11; color: #00ffcc; font-family: sans-serif; text-align: center; padding: 50px; }
         .box { border: 2px solid #00ffcc; padding: 20px; border-radius: 15px; background: #161b22; box-shadow: 0 0 15px #00ffcc; }
-        input { padding: 12px; width: 70%; border-radius: 8px; border: none; margin-top: 10px; }
+        input { padding: 12px; width: 70%; border-radius: 8px; border: none; margin-top: 10px; color: black; }
         button { padding: 12px 20px; background: #00ffcc; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="box">
-        <h1 id="msg">नमस्ते प्रिंस भाई!</h1>
-        <p id="status">मैं आपकी कविता हूँ...</p>
-        <input type="text" id="userInput" placeholder="यहाँ कुछ लिखो...">
+        <h1 id="msg">Namaste Prince Bhai!</h1>
+        <p id="status">Main aapki Kavita hoon...</p>
+        <input type="text" id="userInput" placeholder="Yahan kuch likho...">
         <br>
-        <button onclick="talk()">बात करें</button>
+        <button onclick="talk()">Baat Karen</button>
     </div>
 
     <script>
         let userName = localStorage.getItem("uName");
-
-        // अगर नाम नहीं पता तो पूछो
         if (!userName) {
-            userName = prompt("नमस्ते! आपका नाम क्या है?");
+            userName = prompt("Namaste! Aapka naam kya hai?");
             if(userName) localStorage.setItem("uName", userName);
         }
+        document.getElementById("msg").innerText = "Namaste " + (userName || "Dost") + " Bhai!";
 
-        const msg = document.getElementById("msg");
-        msg.innerText = "नमस्ते " + (userName || "दोस्त") + " भाई!";
-
-        // बोलने वाला फंक्शन
         function speak(text) {
             let speech = new SpeechSynthesisUtterance();
             speech.text = text;
-            speech.lang = "hi-IN"; // हिंदी आवाज़
-            speech.rate = 1;
+            speech.lang = "hi-IN";
             window.speechSynthesis.speak(speech);
         }
 
         function talk() {
             let input = document.getElementById("userInput").value.toLowerCase();
             let reply = "";
-
-            if (input.includes("hello") || input.includes("नमस्ते")) {
-                reply = "नमस्ते " + userName + " भाई! कैसे हो आप?";
-            } else if (input.includes("कैसे हो")) {
-                reply = "मैं बहुत अच्छी हूँ, आप बताओ क्या चल रहा है?";
+            if (input.includes("hello") || input.includes("namaste")) {
+                reply = "Namaste " + userName + " bhai! Kaise ho aap?";
+            } else if (input.includes("kaise ho")) {
+                reply = "Main bahut acchi hoon, aap batao kya chal raha hai?";
             } else {
-                reply = "अभी मेरा दिमाग बन रहा है, पर आपकी बात सुनकर अच्छा लगा!";
+                reply = "Abhi mera dimag update ho raha hai, par aapse baat karke accha laga!";
             }
-
             document.getElementById("status").innerText = reply;
-            speak(reply); // यहाँ कविता बोलेगी!
+            speak(reply);
         }
     </script>
 </body>
 </html>
- 
