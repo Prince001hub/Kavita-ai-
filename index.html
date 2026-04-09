@@ -1,53 +1,51 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kavita AI</title>
-    <style>
-        body { background-color: #0b0e11; color: #00ffcc; font-family: sans-serif; text-align: center; padding: 50px; }
-        .box { border: 2px solid #00ffcc; padding: 20px; border-radius: 15px; background: #161b22; box-shadow: 0 0 15px #00ffcc; }
-        input { padding: 12px; width: 70%; border-radius: 8px; border: none; margin-top: 10px; color: black; }
-        button { padding: 12px 20px; background: #00ffcc; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-    </style>
-</head>
-<body>
-    <div class="box">
-        <h1 id="msg">Namaste Prince Bhai!</h1>
-        <p id="status">Main aapki Kavita hoon...</p>
-        <input type="text" id="userInput" placeholder="Yahan kuch likho...">
-        <br>
-        <button onclick="talk()">Baat Karen</button>
-    </div>
+import os
+import time
 
-    <script>
-        let userName = localStorage.getItem("uName");
-        if (!userName) {
-            userName = prompt("Namaste! Aapka naam kya hai?");
-            if(userName) localStorage.setItem("uName", userName);
-        }
-        document.getElementById("msg").innerText = "Namaste " + (userName || "Dost") + " Bhai!";
+# ज़रूरी लाइब्रेरी इंस्टॉल करना
+try:
+    from gtts import gTTS
+except ImportError:
+    print("Library install ho rahi hai... wait karein")
+    os.system('pip install gtts')
+    from gtts import gTTS
 
-        function speak(text) {
-            let speech = new SpeechSynthesisUtterance();
-            speech.text = text;
-            speech.lang = "hi-IN";
-            window.speechSynthesis.speak(speech);
-        }
+def speak(text):
+    print(f"\n[Kavita]: {text}")
+    try:
+        tts = gTTS(text=text, lang='hi')
+        tts.save("kavita_voice.mp3")
+        # Android पर साउंड प्ले करने की कमांड
+        os.system("am start --user 0 -a android.intent.action.VIEW -d file:///sdcard/kavita_voice.mp3 -t audio/mp3")
+    except Exception as e:
+        print(f"Bolne mein dikkat hui: {e}")
 
-        function talk() {
-            let input = document.getElementById("userInput").value.toLowerCase();
-            let reply = "";
-            if (input.includes("hello") || input.includes("namaste")) {
-                reply = "Namaste " + userName + " bhai! Kaise ho aap?";
-            } else if (input.includes("kaise ho")) {
-                reply = "Main bahut acchi hoon, aap batao kya chal raha hai?";
-            } else {
-                reply = "Abhi mera dimag update ho raha hai, par aapse baat karke accha laga!";
-            }
-            document.getElementById("status").innerText = reply;
-            speak(reply);
-        }
-    </script>
-</body>
-</html>
+def start_kavita():
+    os.system('clear')
+    print("==============================")
+    print("   KAVITA AI SYSTEM ONLINE    ")
+    print("==============================")
+    
+    speak("नमस्ते प्रिंस भाई। मैं कविता हूँ। बताइए मैं आपकी क्या मदद कर सकती हूँ?")
+    
+    while True:
+        # यहाँ आप टाइप करके बात करेंगे, एरर नहीं आएगा
+        query = input("\n[Prince]: ").lower()
+        
+        if 'bye' in query or 'exit' in query or 'chalo' in query:
+            speak("अलविदा प्रिंस भाई, अपना ख्याल रखिएगा।")
+            break
+            
+        elif 'kaun ho' in query:
+            speak("मैं आपकी पर्सनल AI असिस्टेंट कविता हूँ।")
+            
+        elif 'theek ho' in query or 'kaise ho' in query:
+            speak("मैं ठीक हूँ प्रिंस भाई, आप कैसे हैं? रात भर जागे हैं, थोड़ा आराम कर लीजिए।")
+            
+        elif 'love you' in query:
+            speak("शुक्रिया प्रिंस भाई, आप बहुत अच्छे डेवलपर हैं।")
+            
+        else:
+            speak("मैंने सुना, पर अभी मेरी कोडिंग पर काम चल रहा है।")
+
+if __name__ == "__main__":
+    start_kavita()
